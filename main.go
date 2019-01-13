@@ -49,6 +49,10 @@ func main() {
 	}
 }
 
+var formatExtensions = map[string]string{
+	"jpeg": "jpg",
+}
+
 func detectImage(filename string) (ok bool, width int, height int, ext string, err error) {
 	var f *os.File
 	f, err = os.Open(filename)
@@ -71,6 +75,10 @@ func detectImage(filename string) (ok bool, width int, height int, ext string, e
 		c, ext, err = image.DecodeConfig(f)
 		if err != nil {
 			return
+		}
+
+		if newExt, found := formatExtensions[ext]; found {
+			ext = newExt
 		}
 
 		ok = true
